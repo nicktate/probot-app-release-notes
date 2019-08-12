@@ -131,15 +131,30 @@ async function notesForCommits(context, commits) {
   }
 
   if (!config.changelog.sections.security) {
-    config.changelog.sections.security = 'security';
+    config.changelog.sections.security = ['security'];
+  }
+
+  // support legacy configuration file by coercing to array
+  if (typeof config.changelog.sections.security === 'string') {
+    config.changelog.sections.security = [ config.changelog.sections.security  ];
   }
 
   if (!config.changelog.sections.features) {
-    config.changelog.sections.features = 'features';
+    config.changelog.sections.features = ['features'];
+  }
+
+  // support legacy configuration file by coercing to array
+  if (typeof config.changelog.sections.features === 'string') {
+    config.changelog.sections.features = [ config.changelog.sections.features  ];
   }
 
   if (!config.changelog.sections.bugfixes) {
-    config.changelog.sections.bugfixes = 'bugfixes';
+    config.changelog.sections.bugfixes = ['bugfixes'];
+  }
+
+  // support legacy configuration file by coercing to array
+  if (typeof config.changelog.sections.bugfixes === 'string') {
+    config.changelog.sections.bugfixes = [ config.changelog.sections.bugfixes  ];
   }
 
   if (!config.changelog.ignoredLabels) {
@@ -161,15 +176,15 @@ async function notesForCommits(context, commits) {
     ) {
       continue;
     } else if (
-      pr.labels.some(label => config.changelog.sections.security === label.name)
+      pr.labels.some(label => config.changelog.sections.security.includes(label.name))
     ) {
       changes.security.push(pr);
     } else if (
-      pr.labels.some(label => config.changelog.sections.features === label.name)
+      pr.labels.some(label => config.changelog.sections.features.includes(label.name))
     ) {
       changes.features.push(pr);
     } else if (
-      pr.labels.some(label => config.changelog.sections.bugfixes === label.name)
+      pr.labels.some(label => config.changelog.sections.bugfixes.includes(label.name))
     ) {
       changes.bugfixes.push(pr);
     } else {
