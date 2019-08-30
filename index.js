@@ -202,7 +202,7 @@ function buildCommits(commitsBySha, releaseSha, prevReleaseSha) {
     const commit = commitsBySha.get(nextSha);
     commits.push(commit.sha);
     if (commit.parents.length > 1) {
-      throw new Error(`commit has ${commit.sha} multiple parents`);
+      console.info(`commit has ${commit.sha} multiple parents... just picking the first which is branch merge commit was made into`)
     }
     nextSha = commit.parents.length === 0 ? void 0 : commit.parents[0].sha;
   }
